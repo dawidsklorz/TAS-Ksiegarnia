@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Czas generowania: 24 Paź 2016, 21:55
+-- Czas generowania: 30 Paź 2016, 22:16
 -- Wersja serwera: 5.6.21
 -- Wersja PHP: 5.6.3
 
@@ -27,43 +27,43 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `category` (
-`id` int(11) NOT NULL,
+  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '(DC2Type:guid)',
   `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Zrzut danych tabeli `category`
 --
 
 INSERT INTO `category` (`id`, `title`) VALUES
-(1, 'Biografie'),
-(2, 'Fantastyka'),
-(3, 'Horror'),
-(4, 'Klasyka'),
-(5, 'Poezja'),
-(6, 'Przygodowa'),
-(7, 'Historyczna'),
-(8, 'Kryminał'),
-(9, 'Dramaty'),
-(10, 'Astronomiczne'),
-(11, 'Biznes'),
-(12, 'Finanse'),
-(13, 'Encyklopedie'),
-(14, 'Słowniki'),
-(15, 'Filozofia'),
-(16, 'Podróżnicze'),
-(17, 'Informatyka'),
-(18, 'Matematyka'),
-(19, 'Komiksy'),
-(20, 'Kulinaria'),
-(21, 'Militaria'),
-(22, 'Motoryzacja'),
-(23, 'Muzyka'),
-(24, 'Religia'),
-(25, 'Sport'),
-(26, 'Turystyka'),
-(27, 'Medycyna'),
-(28, 'Zrowie');
+('1', 'Astronomiczne'),
+('10', 'Informatyka'),
+('11', 'Klasyka'),
+('12', 'Komiksy'),
+('13', 'Kryminał'),
+('14', 'Kulinaria'),
+('15', 'Matematyka'),
+('16', 'Medycyna'),
+('17', 'Militaria'),
+('18', 'Motoryzacja'),
+('19', 'Muzyka'),
+('2', 'Biografie'),
+('20', 'Podróżnicze'),
+('21', 'Poezja'),
+('22', 'Powieść'),
+('23', 'Przygodowa'),
+('24', 'Religia'),
+('25', 'Słowniki'),
+('26', 'Sport'),
+('27', 'Turystyka'),
+('28', 'Zrowie'),
+('3', 'Dramaty'),
+('4', 'Encyklopedie'),
+('5', 'Fantastyka'),
+('6', 'Filozofia'),
+('7', 'Finanse'),
+('8', 'Historyczna'),
+('9', 'Horror');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -75,15 +75,6 @@ INSERT INTO `category` (`id`, `title`) VALUES
 ALTER TABLE `category`
  ADD PRIMARY KEY (`id`);
 
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT dla tabeli `category`
---
-ALTER TABLE `category`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -1,22 +1,24 @@
 <?php
 
-// src/AppBundle/Entity/User.php
 namespace AppBundle\Entity;
 
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
  */
-class User
+class User extends BaseUser
 {
 		/**
 	 * @ORM\Column(type="guid")
 	 * @ORM\Id
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=100)
@@ -27,16 +29,6 @@ class User
      * @ORM\Column(type="string", length=100)
      */
     private $surname;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $email;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $password;
 
 		/**
 		 * @ORM\Column(type="string")
@@ -54,21 +46,32 @@ class User
 		private $postalCode;
 
 		/**
-		 * @ORM\Column(type="string")
-		 */
+     * @ORM\Column(type="string")
+     * @Assert\File(mimeTypes={ "image/*" })
+     */
 		private $avatar;
 
+		/**
+     * @ORM\Column(type="string")
+     */
+		private $ratedBooks;
 
-    public function __construct($name, $surname, $email, $password, $address, $city, $postalCode, $avatar) {
-       $this->setName($name);
-			 $this->setSurname($surname);
-       $this->setEmail($email);
-       $this->setPassword($password);
-			 $this->setAddress($address);
-			 $this->setCity($city);
-			 $this->setPostalCode($postalCode);
-			 $this->setAvatar($avatar);
+    public function __construct() {
+			parent::__construct();
    }
+
+	 public function create($name, $surname, $address, $city, $postalCode, $avatar, $ratedBooks) {
+		 $instance = new self();
+		 $instance->setName($name);
+		 $instance->setSurname($surname);
+		 $instance->setAddress($address);
+		 $instance->setCity($city);
+		 $instance->setPostalCode($postalCode);
+		 $instance->setAvatar($avatar);
+		 $instance->setRatedBooks($ratedBooks);
+
+		 return $instance;
+	 }
 
 
     /**
@@ -271,5 +274,29 @@ class User
     public function getAvatar()
     {
         return $this->avatar;
+    }
+
+    /**
+     * Set ratedBooks
+     *
+     * @param string $ratedBooks
+     *
+     * @return User
+     */
+    public function setRatedBooks($ratedBooks)
+    {
+        $this->ratedBooks = $ratedBooks;
+
+        return $this;
+    }
+
+    /**
+     * Get ratedBooks
+     *
+     * @return string
+     */
+    public function getRatedBooks()
+    {
+        return $this->ratedBooks;
     }
 }

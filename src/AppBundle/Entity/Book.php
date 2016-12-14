@@ -4,6 +4,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -48,8 +49,11 @@ class Book
 		 */
 		private $date;
 
-    /**
+		/**
      * @ORM\Column(type="string")
+     *
+     *
+     * @Assert\File(mimeTypes={ "image/*" })
      */
     private $cover;
 
@@ -79,26 +83,38 @@ class Book
     private $discountPrice;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="integer")
      */
     private $rating;
 
+		/**
+     * @ORM\Column(type="integer")
+     */
+    private $votes;
 
-    public function __construct($title, $author,$description,$category,$publisher,$cover,$date,$isNew,$isBestseller, $isDiscount, $price, $discountPrice) {
-       $this->setTitle($title);
-       $this->setAuthor($author);
-			 $this->setDescription($description);
-			 $this->setCategory($category);
-			 $this->setPublisher($publisher);
-			 $this->setCover($cover);
-			 $this->setDate($date);
-			 $this->setIsNew($isNew);
-			 $this->setIsBestseller($isBestseller);
-			 $this->setIsDiscount($isDiscount);
-			 $this->setPrice($price);
-			 $this->setDiscountPrice($discountPrice);
-			 $this->setRating("0");
+
+    public function __construct() {
+
    }
+
+	 public function create($title, $author,$description,$category,$publisher,$cover,$date,$isNew,$isBestseller, $isDiscount, $price, $discountPrice) {
+		 $instance = new self();
+		 $instance->setTitle($title);
+		 $instance->setAuthor($author);
+		 $instance->setDescription($description);
+		 $instance->setCategory($category);
+		 $instance->setPublisher($publisher);
+		 $instance->setCover($cover);
+		 $instance->setDate($date);
+		 $instance->setIsNew($isNew);
+		 $instance->setIsBestseller($isBestseller);
+		 $instance->setIsDiscount($isDiscount);
+		 $instance->setPrice($price);
+		 $instance->setDiscountPrice($discountPrice);
+		 $instance->setRating(0);
+		 $instance->setVotes(0);
+		 return $instance;
+	 }
 
 
     /**
@@ -402,13 +418,15 @@ class Book
     /**
      * Set rating
      *
-     * @param string $rating
+     * @param integer $rating
      *
      * @return Book
      */
     public function setRating($rating)
     {
         $this->rating = $rating;
+				// $this->rating = [];
+				// array_push($this->rating, $rating);
 
         return $this;
     }
@@ -416,10 +434,34 @@ class Book
     /**
      * Get rating
      *
-     * @return string
+     * @return integer
      */
     public function getRating()
     {
         return $this->rating;
     }
+
+		/**
+		 * Set votes
+		 *
+		 * @param integer $votes
+		 *
+		 * @return Book
+		 */
+		public function setVotes($votes)
+		{
+				$this->votes = $votes;
+
+				return $this;
+		}
+
+		/**
+		 * Get votes
+		 *
+		 * @return integer
+		 */
+		public function getVotes()
+		{
+				return $this->votes;
+		}
 }

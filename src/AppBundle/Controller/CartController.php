@@ -1,10 +1,11 @@
 <?php
+
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class CartController extends Controller
@@ -16,10 +17,13 @@ class CartController extends Controller
   public function indexAction(Request $request)
   {
     $session = $request->getSession();
-    $cart = $session->get('cart');
+    ($session->get('cart')) ? $cart = $session->get('cart') : $cart = array();
+    $em = $this->getDoctrine()->getManager();
+    $categories = $em->getRepository('AppBundle:Category')->findAll(array(), array('title' => 'asc'));
 
     return $this->render('default/cart.html.twig', array(
       'name' => $session->get('name'),
+      'categories' => $categories,
       'cart' => $cart)
     );
 
@@ -36,14 +40,12 @@ class CartController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $query = $em->createQuery("SELECT b FROM AppBundle:Book b WHERE b.id = '".$id."'");
-        $book = $query->getResult();
+        $book = $em->getRepository('AppBundle:Book')->findOneById($id);
 
         ($session->get('cart') != null) ? $cart = $session->get('cart') : $cart = array();
 
         array_push($cart, $book);
 
-        $session = $request->getSession();
         $session->set('cart', $cart);
 
         return $this->redirect('/cart');
@@ -60,13 +62,18 @@ class CartController extends Controller
 
       $cart = $session->get('cart');
 
+      $remove = true;
 
-      // ...
+      foreach($cart as $book => $b) {
+        if ($b->getId() == $id && $remove == true) {
+             unset($cart[$book]);
+             $remove = false;
+         }
+      }
 
-      return $this->render('default/cart.html.twig', array(
-        'name' => $session->get('name'),
-        'cart' => $cart)
-      );
+      $session->set('cart', $cart);
+
+      return $this->redirect('cart');
 
     }
 
